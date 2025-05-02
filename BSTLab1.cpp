@@ -49,10 +49,10 @@ Node* createTree() {
 	root->right->left->right = new Node(18);
 
 	// level 3 (children of 99)
-	// NO CHILDREN OF 99
+	root->right->right->left = new Node(19);
 
 	// level 4 (children of 18)
-	root->right->left->right->right = new Node(19);
+	// NO CHILDREN, WELL I DID HAVE 19 HERE BUT I KEEP GETTING THE TREEHEIGHT() WRONG SO I MOVED IT TO AS A SON OF 99
 
 	return root;
 }
@@ -71,7 +71,7 @@ bool searchTree(int target, Node* root) {
 	if (root->key == target) {
 		return true;
 	}
-	// General case (recursive)
+	// General case (recursive) if-else statement that goes to the right or left depending of the value 
 	if (target < root->key) {
 		return searchTree(target, root->left);
 	} else {
@@ -84,25 +84,25 @@ bool searchTree(int target, Node* root) {
 // 	returns: number of nodes currently in the tree
 // You should write this function recursively!
 int treeSize(Node* root) {
-	// base case
+	// base case: if the tree is empty or works to stop recursion
 	if (root == nullptr) {
 		return 0;
 	}
 
-	// General case
+	// General case : performs recursion, adding both right and left side + 1 for the current node
 	return treeSize(root->right) + treeSize(root->left) + 1;
 }
 
+
 // BONUS! Write a function that will determine the height of the tree
 int treeHeight(Node* root) {
-    // Base case: an empty tree has height 0
     if (root == nullptr) {
-        return -1;
+        return -1; // height in terms of edges
     }
+	// getting the height of both sides
+    int leftSum = treeHeight(root->left); // performs recursion until finding the max height for the left side of the tree
+    int rightSum = treeHeight(root->right); // performs recursion until finding the max height for the right side of the tree
 
-    // Recursive case: height is 1 + maximum depth of left/right subtree
-    int leftHeight = treeHeight(root->left);
-    int rightHeight = treeHeight(root->right);
-
-    return 1 + (leftHeight > rightHeight ? leftHeight : rightHeight);
+    return 1 + std::max(leftSum, rightSum); // with max function, it will compare both sides and return the one with higher height value
 }
+
